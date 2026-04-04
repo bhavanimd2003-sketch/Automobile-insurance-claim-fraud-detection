@@ -1,0 +1,1 @@
+web: gunicorn Auto_Insurance_Claims_Fraud_Detection.wsgi:application

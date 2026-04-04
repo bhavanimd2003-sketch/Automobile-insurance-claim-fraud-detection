@@ -1,0 +1,21 @@
+{% extends 'Employess/employeebase.html' %}
+{% block contents %}
+<div class="glass-card" style="max-width: 700px; text-align: center;">
+    <h2 style="color: var(--primary-dark); margin-bottom: 30px;">Model Performance Metrics</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <div style="padding: 20px; background: rgba(37, 99, 235, 0.1); border-radius: 15px;">
+            <h3 style="color: var(--primary-blue); margin: 0;">{{ accuracy }}%</h3>
+            <p style="font-weight: 700; font-size: 0.8rem; margin: 5px 0 0;">ACCURACY</p>
+        </div>
+        <div style="padding: 20px; background: rgba(30, 58, 138, 0.1); border-radius: 15px;">
+            <h3 style="color: var(--primary-dark); margin: 0;">{{ precision }}%</h3>
+            <p style="font-weight: 700; font-size: 0.8rem; margin: 5px 0 0;">PRECISION</p>
+        </div>
+        <div style="padding: 20px; background: rgba(15, 23, 42, 0.1); border-radius: 15px;">
+            <h3 style="color: var(--text-main); margin: 0;">{{ recall }}%</h3>
+            <p style="font-weight: 700; font-size: 0.8rem; margin: 5px 0 0;">RECALL</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
