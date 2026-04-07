@@ -21,27 +21,24 @@ def employeeRegister(request):
         state=request.POST['state']
         location=request.POST['location']
 
+        # Check for duplicates before attempting to save
+        if employeeRegistrationModel.objects.filter(mobile=mobile).exists():
+            messages.error(request, 'Registration failed: Mobile number already registered.')
+            return render(request, 'employeeRegistrations.html')
+        if employeeRegistrationModel.objects.filter(loginid=loginid).exists():
+            messages.error(request, 'Registration failed: Login ID already exists.')
+            return render(request, 'employeeRegistrations.html')
+        if employeeRegistrationModel.objects.filter(email=email).exists():
+            messages.error(request, 'Registration failed: Email already registered.')
+            return render(request, 'employeeRegistrations.html')
+
         ur = employeeRegistrationModel(name=name, loginid=loginid, password=pswd, email=email, state=state, location=location, mobile=mobile)
         try:
             print('Data is Valid')
             ur.save()
             messages.success(request, 'You have been successfully registered')
             return render(request, 'employeeRegistrations.html')
-        except IntegrityError as e:
-            # Handle unique constraint violations gracefully
-            err_msg = str(e)
-            print('Registration IntegrityError:', err_msg)
-            if 'mobile' in err_msg:
-                messages.error(request, 'Registration failed: Mobile number already registered.')
-            elif 'loginid' in err_msg:
-                messages.error(request, 'Registration failed: Login ID already exists.')
-            elif 'email' in err_msg:
-                messages.error(request, 'Registration failed: Email already registered.')
-            else:
-                messages.error(request, 'Registration failed due to duplicate data.')
-            return render(request, 'employeeRegistrations.html')
         except Exception as e:
-            # Log the exception to server logs for debugging and show a friendly message
             print('Registration error:', str(e))
             messages.error(request, 'Registration failed. Please check input and try again.')
             return render(request, 'employeeRegistrations.html')
