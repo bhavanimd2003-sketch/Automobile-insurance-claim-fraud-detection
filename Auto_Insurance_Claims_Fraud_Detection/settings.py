@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,9 +86,8 @@ DATABASES = {
 }
 
 # Add DATABASE_URL support for Render PostgreSQL if available
-database_url = os.environ.get('DATABASE_URL')
-if database_url:
-    DATABASES['default'] = dj_database_url.config(default=database_url, conn_max_age=600)
+# Using default SQLite database (Render ephemeral filesystem).
+# For persistent production data, consider using a managed database and set `DATABASE_URL`.
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
