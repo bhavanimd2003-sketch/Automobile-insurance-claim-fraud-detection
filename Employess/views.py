@@ -43,8 +43,7 @@ def employeeRegister(request):
             messages.error(request, 'Registration failed. Please check input and try again.')
             return render(request, 'employeeRegistrations.html')
     else:
-      
-        return render(request, 'assets/employeeRegistrations.html')
+        return render(request, 'employeeRegistrations.html')
 
 def employeeLoginCheck(request):
     if request.method == "POST":
