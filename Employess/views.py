@@ -20,18 +20,17 @@ def employeeRegister(request):
         state=request.POST['state']
         location=request.POST['location']
 
-        ur=employeeRegistrationModel(name=name,loginid=loginid,password=pswd,email=email,state=state,location=location,mobile=mobile)
-        #form=UserRegistrationForm(request.POST)
-        if ur:
+        ur = employeeRegistrationModel(name=name, loginid=loginid, password=pswd, email=email, state=state, location=location, mobile=mobile)
+        try:
             print('Data is Valid')
             ur.save()
             messages.success(request, 'You have been successfully registered')
-            
             return render(request, 'employeeRegistrations.html')
-        else:
-            messages.success(request, 'Email or Mobile Already Existed')
-            return render(request, 'assets/employeeRegistrations.html')
-            print("Invalid form")
+        except Exception as e:
+            # Log the exception to server logs for debugging and show a friendly message
+            print('Registration error:', str(e))
+            messages.error(request, f'Registration failed: {e}')
+            return render(request, 'employeeRegistrations.html')
     else:
       
         return render(request, 'assets/employeeRegistrations.html')
