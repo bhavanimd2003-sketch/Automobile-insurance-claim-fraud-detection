@@ -16,10 +16,9 @@ def managementLoginCheck(request):
        if loginid=='admin' and pswd=='admin':
            
            return render(request,'Management/managementhome.html')
-       else:
-            messages.error(request, 'Please enter details carefully')
-
-            return render(request,'ManagementLogin.html')
+      else:
+          messages.error(request, 'Please enter details carefully')
+          return render(request, 'managementLogin.html')
 
 def employeeDetails(request):
     ud=employeeRegistrationModel.objects.all()
