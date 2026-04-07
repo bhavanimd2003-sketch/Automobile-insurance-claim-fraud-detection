@@ -10,15 +10,15 @@ def managementHome(request):
 
 # Create your views here.
 def managementLoginCheck(request):
-    if request.method=="POST":
-       loginid=request.POST['loginid']
-       pswd=request.POST['pswd']
-       if loginid=='admin' and pswd=='admin':
-           
-           return render(request,'Management/managementhome.html')
-      else:
-          messages.error(request, 'Please enter details carefully')
-          return render(request, 'managementLogin.html')
+    if request.method == "POST":
+        loginid = request.POST.get('loginid')
+        pswd = request.POST.get('pswd')
+        if loginid == 'admin' and pswd == 'admin':
+            return render(request, 'Management/managementhome.html')
+        else:
+            messages.error(request, 'Please enter details carefully')
+            return render(request, 'managementLogin.html')
+    return render(request, 'managementLogin.html')
 
 def employeeDetails(request):
     ud=employeeRegistrationModel.objects.all()
