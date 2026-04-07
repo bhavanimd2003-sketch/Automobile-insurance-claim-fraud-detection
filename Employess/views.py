@@ -5,6 +5,7 @@ import os
 from django.shortcuts import render
 from Employess.models import employeeRegistrationModel
 from django.contrib import messages
+from django.db import IntegrityError
 
 def employeehome(request):
     return render(request, 'Employess/employeeHome.html', {})
@@ -26,10 +27,23 @@ def employeeRegister(request):
             ur.save()
             messages.success(request, 'You have been successfully registered')
             return render(request, 'employeeRegistrations.html')
+        except IntegrityError as e:
+            # Handle unique constraint violations gracefully
+            err_msg = str(e)
+            print('Registration IntegrityError:', err_msg)
+            if 'mobile' in err_msg:
+                messages.error(request, 'Registration failed: Mobile number already registered.')
+            elif 'loginid' in err_msg:
+                messages.error(request, 'Registration failed: Login ID already exists.')
+            elif 'email' in err_msg:
+                messages.error(request, 'Registration failed: Email already registered.')
+            else:
+                messages.error(request, 'Registration failed due to duplicate data.')
+            return render(request, 'employeeRegistrations.html')
         except Exception as e:
             # Log the exception to server logs for debugging and show a friendly message
             print('Registration error:', str(e))
-            messages.error(request, f'Registration failed: {e}')
+            messages.error(request, 'Registration failed. Please check input and try again.')
             return render(request, 'employeeRegistrations.html')
     else:
       
