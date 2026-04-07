@@ -35,14 +35,26 @@ def datasetdetails(request):
 
 
 def updateEmployeeStatus(request):
-    loginid=request.GET['loginid']
-    usu=employeeRegistrationModel.objects.get(loginid=loginid)
-    if usu.status=='waiting':
-        usu.status='Activated'
+    # Safely get loginid and handle missing or invalid values
+    loginid = request.GET.get('loginid')
+    if not loginid:
+        messages.error(request, 'Missing login id for activation')
+        ud = employeeRegistrationModel.objects.all()
+        return render(request, 'Management/employeeDetais.html', context={'ud': ud})
+
+    try:
+        usu = employeeRegistrationModel.objects.get(loginid=loginid)
+    except employeeRegistrationModel.DoesNotExist:
+        messages.error(request, 'Employee not found')
+        ud = employeeRegistrationModel.objects.all()
+        return render(request, 'Management/employeeDetais.html', context={'ud': ud})
+
+    if usu.status == 'waiting':
+        usu.status = 'Activated'
         usu.save()
-        ud=employeeRegistrationModel.objects.all()
-        print(ud)
-        return render(request,'Management/employeeDetais.html',context={'ud':ud})
+
+    ud = employeeRegistrationModel.objects.all()
+    return render(request, 'Management/employeeDetais.html', context={'ud': ud})
 
 
     
