@@ -2,7 +2,6 @@ import os
 from django.conf import settings
 from django.shortcuts import render
 from django.contrib import messages
-import pandas as pd
 
 from Employess.models import employeeRegistrationModel
 
@@ -28,6 +27,9 @@ def employeeDetails(request):
     return render(request,'Management/employeeDetais.html',context={'ud':ud})
 
 def datasetdetails(request):
+    # import pandas lazily to avoid heavy startup imports
+    import pandas as pd
+
     path = os.path.join(settings.MEDIA_ROOT, 'insurance fraud claims.csv')
     data = pd.read_csv(path, nrows=100).to_html()
     return render(request, 'Management/datasetreview.html', context={'data': data})
